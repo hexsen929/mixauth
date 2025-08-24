@@ -1,0 +1,56 @@
+html {
+  -webkit-font-smoothing: antialiased;
+
+  body {
+    min-height: 100vh;
+  }
+
+  .dav-selection-box {
+    border-radius: 5px;
+    background-color: rgba(160, 84, 245, 0.14) !important;
+  }
+
+  .MuiNativeSelect-select {
+    padding: 10px;
+  }
+
+
+  .MuiSvgIcon-root {
+    font-size: 24px;
+    color: rgba(142, 42, 254, 0.44);
+  }
+
+  .MuiButtonBase-root {
+    font-size: 14px;
+  }
+
+  .MuiFormLabel-root {
+    user-select: none;
+  }
+
+
+  .MuiInputBase-input,
+  .MuiFormLabel-root,
+  .MuiTypography-root,
+  .MuiMenuItem-root, {
+    font-size: 16px
+  }
+
+  .MuiMenuItem-root {
+    overflow: hidden;
+    width: fit-content;
+    //max-width: 100px;
+  }
+
+
+  .MuiCheckbox-root {
+    width: 30px;
+    height: 30px;
+  }
+
+  .MuiTreeItem-label, {
+    font-size: 16px;
+    user-select: none;
+  }
+
+}
