@@ -16,8 +16,8 @@ export async function getWechatQrInfo() {
 
     const uuid = src.split('/').pop()
     return {
-        uuid,
-        url: `https://open.weixin.qq.com/connect/qrcode/${uuid}`
+        id: uuid,
+        qrcode: `https://open.weixin.qq.com/connect/qrcode/${uuid}`
     }
 }
 

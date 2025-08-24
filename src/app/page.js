@@ -1,12 +1,9 @@
 "use client"
-import {useEffect} from "react";
 import {debounce} from "@/app/utils/CommonUtils";
-import 'sanitize.css'
-import './app.scss'
-import './main.scss'
 import styled from "styled-components";
 import Image from "next/image";
 import Link from "next/link";
+import {useEffect} from "react";
 
 
 const Container = styled.div`
@@ -47,6 +44,8 @@ export default function Home() {
 
     useEffect(() => {
 
+        console.info('由MixAuth提供认证支持')
+
         function updateSize() {
             const width = Math.max(window.innerWidth, window.innerHeight)
             document.documentElement.style.fontSize = width / 100 + 'px'
@@ -72,8 +71,6 @@ export default function Home() {
                     />
                     QQ登录
                 </Link>
-
-
                 <Link href={'/wechat'} className={'shadow'}>
                     <Image
                         src={'/wechat.png'}

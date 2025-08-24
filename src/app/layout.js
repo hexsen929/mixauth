@@ -1,5 +1,9 @@
 import StyledComponentsRegistry from "@/app/lib/registry";
 import config from "@/config";
+import {Toaster} from "react-hot-toast";
+import 'sanitize.css'
+import './app.scss'
+import './main.scss'
 
 export const metadata = {
     title: config.title,
@@ -18,8 +22,10 @@ export default function RootLayout({children}) {
     return (
         <html lang="chs">
         <body>
-        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
-        {children}
+        <StyledComponentsRegistry>
+            {children}
+        </StyledComponentsRegistry>
+        <Toaster/>
         </body>
         </html>
     );

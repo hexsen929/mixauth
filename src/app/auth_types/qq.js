@@ -27,7 +27,7 @@ export async function getQqQrInfo() {
 
     return {
         id: response.headers['set-cookie'][0].match(/(?:^|;\s*)qrsig=([^;]+)/)[1],
-        qrcode: arrayBufferToBase64(response.data)
+        qrcode: `data:image/png;base64,${arrayBufferToBase64(response.data)}`
     }
 }
 

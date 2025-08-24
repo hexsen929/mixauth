@@ -55,6 +55,17 @@ export function noProxy(obj) {
     return ref(obj)
 }
 
+export function safeInterval(fn, interval) {
+    let timer;
+    const run = async () => {
+        await fn().catch(console.error);
+        timer = setTimeout(run, interval); // 任务结束后再启动下一轮
+    };
+    timer = setTimeout(run, interval);
+    return () => clearTimeout(timer); // 返回停止函数
+}
+
+
 /**
  * 生成一个带有更新参数的新 URL（不会修改浏览器地址）
  * @param {Object} params - 需要更新的参数

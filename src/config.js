@@ -18,5 +18,8 @@ axiosRetry(client, {
 export default {
     title: 'MixAuth',
     description: 'mixauth登录',
-
+    //请自行更换为更复杂的key(22位以上)
+    signKey: "123",
+    //登录信息校验过期时间，默认10分钟
+    timeout: 1000 * 60 * 10,
 }
