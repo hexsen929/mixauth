@@ -55,14 +55,27 @@ export function noProxy(obj) {
     return ref(obj)
 }
 
-export function safeInterval(fn, interval) {
-    let timer;
+export function safeInterval(fn, interval, {immediate = false} = {}) {
+    let stopped = false;
+
     const run = async () => {
-        await fn().catch(console.error);
-        timer = setTimeout(run, interval); // 任务结束后再启动下一轮
+        if (!immediate) await sleep(interval); // 如果不是立即执行，先等一轮
+        while (!stopped) {
+            try {
+                await fn();
+            } catch (e) {
+                console.error(e);
+            }
+            if (stopped) break;
+            await sleep(interval);
+        }
     };
-    timer = setTimeout(run, interval);
-    return () => clearTimeout(timer); // 返回停止函数
+
+    run();
+
+    return () => {
+        stopped = true;
+    };
 }
 
 

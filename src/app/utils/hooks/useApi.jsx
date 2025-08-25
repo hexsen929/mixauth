@@ -98,7 +98,7 @@ export default function useApi({
             const stop = safeInterval(fetchData, refreshInterval)
             return () => stop()
         }
-    }, [path, method, headers, config, body, refreshInterval])
+    }, [path, method, headers, config, body, refreshInterval, request])
 
     const {err, data, isLoading} = state
 

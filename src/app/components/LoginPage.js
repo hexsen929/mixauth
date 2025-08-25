@@ -167,7 +167,7 @@ function Page({name = 'qq'}) {
     useApi({
         path: `/api/status`,
         method: 'POST',
-        request: !!id,
+        request: !!id && !success,
         refreshInterval: 1000,
         body: {
             type: authType,
