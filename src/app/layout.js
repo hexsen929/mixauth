@@ -1,9 +1,9 @@
 import StyledComponentsRegistry from "@/app/lib/registry";
 import config from "@/config";
-import {Toaster} from "react-hot-toast";
 import 'sanitize.css'
 import './app.scss'
 import './main.scss'
+import {DialogContainer} from "@/app/utils/DialogContainer";
 
 export const metadata = {
     title: config.title,
@@ -25,7 +25,7 @@ export default function RootLayout({children}) {
         <StyledComponentsRegistry>
             {children}
         </StyledComponentsRegistry>
-        <Toaster/>
+        <DialogContainer/>
         </body>
         </html>
     );

@@ -5,6 +5,8 @@ import useApi from "@/app/utils/hooks/useApi";
 import Image from "next/image";
 import useProxyState from "@/app/utils/hooks/useProxyState";
 import {run} from "@/app/utils/CommonUtils";
+import {handlers} from "@/app/components/loginpage/handlers";
+import {sendLoginResult} from "@/app/components/loginpage/utils";
 
 const Container = styled.div`
     display: flex;
@@ -69,69 +71,6 @@ const Container = styled.div`
     }
 `
 
-function sendLoginResult(result) {
-    // 通用版：允许任何父页面接收
-    window.parent.postMessage(
-        {type: 'mixauth_login_result', data: result},
-        '*' // 因为通用页面，不确定父域名
-    );
-}
-
-const qqHandler = {
-    name: "qq",
-    icon: '/qq.png',
-    qrTip: '请使用手机QQ扫码登录',
-    stateHandler(state, body) {
-        const {data} = body
-        if (data.code === '65') {
-            state.expired = true;
-            return
-        }
-        if (data.code === '68') {
-            state.denied = true;
-            return
-        }
-        if (data.code === '67') {
-            state.scanned = true;
-            return
-        }
-        if (data.code === '0' && data.success) {
-            state.success = true
-            state.signData = body.signData
-        }
-    }
-}
-
-const weChatHandler = {
-    name: "wechat",
-    icon: '/wechat.png',
-    qrTip: '请使用手机微信扫码登录',
-    stateHandler(state, body) {
-        const {data} = body
-        if (data.wx_errcode === 404) {
-            state.scanned = true;
-            return
-        }
-        if (data.wx_errcode === 403) {
-            state.denied = true;
-            return
-        }
-        const wxData = data?.data
-        if (wxData) {
-            const {login_type, unionid} = wxData
-            if (login_type === "weixin" && unionid) {
-                state.success = true
-                state.signData = body.signData
-            }
-        }
-    }
-}
-
-const handlers = {
-    qq: qqHandler,
-    wechat: weChatHandler,
-}
-
 function Page({name = 'qq'}) {
 
     const handler = handlers[name];
@@ -162,12 +101,12 @@ function Page({name = 'qq'}) {
         if (success && signData) {
             sendLoginResult(signData)
         }
-    }, [success])
+    }, [success, handler])
 
     useApi({
         path: `/api/status`,
         method: 'POST',
-        request: !!id && !success,
+        request: !!id && !success && !denied && !expired,
         refreshInterval: 1000,
         body: {
             type: authType,

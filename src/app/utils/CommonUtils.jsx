@@ -1,6 +1,4 @@
 import {ref} from "valtio";
-import toast from "react-hot-toast";
-import {CircularProgress} from "@mui/material";
 
 
 const debounceMap = {}
@@ -15,18 +13,6 @@ export function debounce(key, fn, delay) {
         clearTimeout(debounceMap[key])
     }
     debounceMap[key] = setTimeout(fn, delay)
-}
-
-export function notifyMsg(msg, options) {
-    return toast.success(msg, options)
-}
-
-export function notifyError(msg, options) {
-    return toast.error(msg, options)
-}
-
-export function notifyPromise(promise, msg, options) {
-    return toast.promise(promise, {loading: msg}, {icon: <CircularProgress size={20}/>, ...options})
 }
 
 export function getRoutePath() {
