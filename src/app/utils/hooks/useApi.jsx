@@ -77,11 +77,19 @@ export default function useApi({
         state.err = null
     }
 
+    const {err, data, isLoading} = state
+
+    useDeepCompareEffect(() => {
+        if (request && !isLoading && refreshInterval > 0) {
+            const stop = safeInterval(fetchData, refreshInterval)
+            return () => stop()
+        }
+    }, [path, method, headers, config, body, refreshInterval, request, isLoading])
+
     useDeepCompareEffect(() => {
         if (!request) {
             return
         }
-
         (async () => {
             state.isLoading = true
             try {
@@ -93,14 +101,7 @@ export default function useApi({
                 state.isLoading = false
             }
         })()
-
-        if (refreshInterval > 0) {
-            const stop = safeInterval(fetchData, refreshInterval)
-            return () => stop()
-        }
     }, [path, method, headers, config, body, refreshInterval, request])
-
-    const {err, data, isLoading} = state
 
     function getContent() {
         if (isLoading) {
