@@ -7,6 +7,7 @@ import useDeepCompareEffect from "./useDeepCompareEffect.js";
 import {noProxy, safeInterval} from "@/app/utils/CommonUtils";
 import axios from "axios";
 import axiosRetry from "axios-retry";
+import {useEffect, useRef} from "react";
 
 const MiddleContainer = styled.div`
     margin: 20px auto;
@@ -64,18 +65,36 @@ export default function useApi({
         isLoading: true,
     })
 
+    const controllers = useRef(new Set())
+
     const fetchData = async () => {
-        const response = await client({
-            ...config,
-            url: path,
-            method: method.toUpperCase(),
-            data: body,
-            headers,
-        })
-        state.data = noProxy(response.data)
-        callback(state.data)
-        state.err = null
+        const controller = new AbortController();
+        const controllerList = controllers.current
+        controllerList.add(controller);
+        try {
+            const response = await client({
+                ...config,
+                url: path,
+                method: method.toUpperCase(),
+                data: body,
+                signal: controller.signal,
+                headers,
+            })
+            state.data = noProxy(response.data)
+            callback(state.data)
+            state.err = null
+        } finally {
+            controllerList.delete(controller)
+        }
     }
+
+    useEffect(() => {
+        return () => {
+            for (const controller of controllers.current) {
+                controller.abort()
+            }
+        }
+    }, [])
 
     const {err, data, isLoading} = state
 

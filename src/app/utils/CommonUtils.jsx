@@ -65,45 +65,8 @@ export function safeInterval(fn, interval, {immediate = false} = {}) {
 }
 
 
-/**
- * 生成一个带有更新参数的新 URL（不会修改浏览器地址）
- * @param {Object} params - 需要更新的参数
- * @returns {string} - 更新后的 URL 字符串
- */
-export function getParamUrl(params) {
-    const url = new URL(window.location.href);
-    const searchParams = url.searchParams;
-
-    Object.entries(params).forEach(([key, value]) => {
-        if (value === null || value === undefined) {
-            searchParams.delete(key);
-        } else {
-            searchParams.set(key, value.toString());
-        }
-    });
-
-    // 返回完整 URL
-    return url.toString();
-}
-
-
 export function reverseSort(compareFn) {
     return (a, b) => compareFn(b, a); // 反转 a 和 b 的位置
-}
-
-export function updateURLParams(params, replace = false) {
-
-    const newUrl = getParamUrl(params);
-
-    if (newUrl !== window.location.href) {
-        const {history} = window;
-        if (replace) {
-            history.replaceState(null, '', newUrl);
-        } else {
-            history.pushState(null, '', newUrl);
-        }
-        window.dispatchEvent(new PopStateEvent('popstate', {state: history.state}));
-    }
 }
 
 
