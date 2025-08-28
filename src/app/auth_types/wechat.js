@@ -2,15 +2,21 @@ import {parse} from "node-html-parser";
 import {XMLParser} from "fast-xml-parser";
 import {client} from "@/config";
 import "server-only"
+import {QrFetcher} from "@/app/auth_types/utils";
+import {logInfo} from "@/app/utils/LogUtil";
+
+
+const qrFetcher = new QrFetcher(getWechatQrInfo)
 
 export default {
     name: "wechat",
-    getQr: getWechatQrInfo,
+    getQr: () => qrFetcher.consumeOldest(),
     checkStatus: checkWechatStatus
 }
 
 
 export async function getWechatQrInfo() {
+    logInfo('获取微信二维码')
     const response = await client.get('https://open.weixin.qq.com/connect/qrconnect?appid=wx31c7ba982b2ca865&redirect_uri=https%3A%2F%2Fkf.qq.com%2Fcgi-bin%2FwxloginKFWeb%3Fjumpurl%3Dhttps%253A%252F%252Fkf.qq.com%252F&scope=snsapi_login')
     const root = parse(response.data)
     const src = root.querySelector('img.js_qrcode_img').getAttribute('src')

@@ -7,7 +7,7 @@ import {connection} from "next/server";
 async function ServerLoginPage({type}) {
 
     await connection()
-    
+
 
     return (
         <LoginPage type={type} qr={await types[type].getQr()}/>

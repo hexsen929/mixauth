@@ -1,21 +1,29 @@
 import {arrayBufferToBase64} from "@/app/utils/ServerUtils";
 import {client} from "@/config";
 import "server-only"
+import {QrFetcher} from "@/app/auth_types/utils";
+import {logInfo} from "@/app/utils/LogUtil";
 
 function hash33(t) {
-    for (var e = 0, n = 0, o = t.length; n < o; ++n)
+    let e = 0;
+    for (let n = 0, o = t.length; n < o; ++n) {
         e += (e << 5) + t.charCodeAt(n);
+    }
     return 2147483647 & e;
 }
 
+
+const qrFetcher = new QrFetcher(getQqQrInfo)
+
 export default {
     name: "qq",
-    getQr: getQqQrInfo,
+    getQr: () => qrFetcher.consumeOldest(),
     checkStatus: checkQqStatus
 }
 
 
 export async function getQqQrInfo() {
+    logInfo('获取QQ二维码')
     const response = await client.get('https://xui.ptlogin2.qq.com/ssl/ptqrshow', {
         params: {
             'appid': '716027609',
