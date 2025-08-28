@@ -7,6 +7,7 @@ import {DialogContainer} from "@/app/utils/DialogContainer";
 import Script from "next/script";
 import {ThemeProvider} from "@mui/material/styles";
 import {theme} from "@/app/theme";
+import GlobalSideEffect from "@/app/components/GlobalSideEffect";
 
 export const metadata = {
     title: config.title,
@@ -39,6 +40,7 @@ export default function RootLayout({children}) {
             gtag('config', 'G-BQJX3Y50XY');
           `}
         </Script>
+        <GlobalSideEffect/>
         <StyledComponentsRegistry>
             <ThemeProvider theme={theme}>
                 {children}

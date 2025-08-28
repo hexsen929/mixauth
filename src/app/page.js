@@ -1,9 +1,7 @@
 "use client"
-import {debounce} from "@/app/utils/CommonUtils";
 import styled from "styled-components";
 import Image from "next/image";
 import Link from "next/link";
-import {useEffect} from "react";
 
 
 const Container = styled.div`
@@ -14,6 +12,7 @@ const Container = styled.div`
     align-items: center;
 
     > .content {
+        user-select: none;
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -41,22 +40,6 @@ const Container = styled.div`
 
 
 export default function Home() {
-
-    useEffect(() => {
-
-        console.info('由MixAuth提供认证支持')
-
-        function updateSize() {
-            const width = Math.max(window.innerWidth, window.innerHeight)
-            document.documentElement.style.fontSize = width / 100 + 'px'
-        }
-
-        updateSize()
-
-        window.addEventListener('resize', () => {
-            debounce('resize', updateSize, 500)
-        })
-    }, [])
 
     return (
         <Container>
