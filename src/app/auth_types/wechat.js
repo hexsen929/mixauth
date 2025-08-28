@@ -17,8 +17,7 @@ export default {
 
 
 export async function getWechatQrInfo() {
-    const ip = await getIp()
-    logInfo(`获取QQ二维码 ${await getIp()}`)
+    logInfo(`获取WeChat二维码 ${await getIp()}`)
     const response = await client.get('https://open.weixin.qq.com/connect/qrconnect?appid=wx31c7ba982b2ca865&redirect_uri=https%3A%2F%2Fkf.qq.com%2Fcgi-bin%2FwxloginKFWeb%3Fjumpurl%3Dhttps%253A%252F%252Fkf.qq.com%252F&scope=snsapi_login')
     const root = parse(response.data)
     const src = root.querySelector('img.js_qrcode_img').getAttribute('src')
