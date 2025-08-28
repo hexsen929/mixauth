@@ -5,6 +5,8 @@ import './app.scss'
 import './main.scss'
 import {DialogContainer} from "@/app/utils/DialogContainer";
 import Script from "next/script";
+import {ThemeProvider} from "@mui/material/styles";
+import {theme} from "@/app/theme";
 
 export const metadata = {
     title: config.title,
@@ -18,6 +20,7 @@ export const viewport = {
     maximumScale: 1.0,
     userScalable: false,
 };
+
 
 export default function RootLayout({children}) {
     return (
@@ -37,7 +40,9 @@ export default function RootLayout({children}) {
           `}
         </Script>
         <StyledComponentsRegistry>
-            {children}
+            <ThemeProvider theme={theme}>
+                {children}
+            </ThemeProvider>
         </StyledComponentsRegistry>
         <DialogContainer/>
         </body>
