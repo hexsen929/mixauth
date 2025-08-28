@@ -1,5 +1,6 @@
 // hmac.js
 import crypto from 'crypto';
+import 'server-only'
 
 export function arrayBufferToBase64(input) {
     let buffer;

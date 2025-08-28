@@ -1,6 +1,7 @@
 import {parse} from "node-html-parser";
 import {XMLParser} from "fast-xml-parser";
 import {client} from "@/config";
+import "server-only"
 
 export default {
     name: "wechat",

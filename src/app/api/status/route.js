@@ -1,6 +1,7 @@
 import {createSign, withErrorHandler} from "@/app/utils/ServerUtils";
 import types from "@/app/auth_types/types";
 import config from "@/config";
+import 'server-only'
 
 export const POST = withErrorHandler(async (req) => {
 

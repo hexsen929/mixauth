@@ -1,13 +1,12 @@
-"use client"
 import React from 'react';
-import LoginPage from "@/app/components/loginpage/LoginPage";
+import ServerLoginPage from "@/app/components/loginpage/ServerLoginPage";
 
 
 function Page() {
 
 
     return (
-        <LoginPage name={'qq'}/>
+        <ServerLoginPage type={'qq'}/>
     );
 }
 

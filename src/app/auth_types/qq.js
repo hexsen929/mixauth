@@ -1,5 +1,6 @@
 import {arrayBufferToBase64} from "@/app/utils/ServerUtils";
 import {client} from "@/config";
+import "server-only"
 
 function hash33(t) {
     for (var e = 0, n = 0, o = t.length; n < o; ++n)

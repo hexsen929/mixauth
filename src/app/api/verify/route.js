@@ -1,5 +1,6 @@
 import {verifySign, withErrorHandler} from "@/app/utils/ServerUtils";
 import config from "@/config";
+import 'server-only'
 
 export const POST = withErrorHandler(async (req) => {
 

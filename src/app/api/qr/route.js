@@ -1,5 +1,6 @@
 import types from "@/app/auth_types/types";
 import {withErrorHandler} from "@/app/utils/ServerUtils";
+import 'server-only'
 
 export const POST = withErrorHandler(async (req) => {
 

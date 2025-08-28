@@ -71,14 +71,13 @@ const Container = styled.div`
     }
 `
 
-function Page({name = 'qq'}) {
+function Page({type, qr}) {
 
-    const handler = handlers[name];
+    const {qrcode, id} = qr
+
+    const handler = handlers[type];
 
     const state = useProxyState({
-        qrcode: null,
-        authType: null,
-        id: null,
         scanned: false,
         expired: false,
         denied: false,
@@ -87,9 +86,6 @@ function Page({name = 'qq'}) {
     })
 
     const {
-        authType,
-        id,
-        qrcode,
         expired,
         scanned,
         denied,
@@ -109,7 +105,7 @@ function Page({name = 'qq'}) {
         request: !!id && !success && !denied && !expired,
         refreshInterval: 1000,
         body: {
-            type: authType,
+            type: type,
             id
         },
         callback(body) {
@@ -118,81 +114,65 @@ function Page({name = 'qq'}) {
     })
 
 
-    const {content} = useApi({
-        path: '/api/qr',
-        method: 'POST',
-        body: {
-            type: handler.name,
-        },
-        callback({data}) {
-            for (const key in data) {
-                state[key] = data[key];
-            }
-        },
-        content(data) {
-            if (!state.qrcode) {
-                return null
-            }
-
-            const classMap = {
-                expired,
-                scanned,
-                denied,
-                success,
-            }
-
-            const classes = Object.keys(classMap).filter(key => classMap[key])
-
-            const tipMap = {
-                "登录成功": success,
-                "二维码已失效": expired,
-                "本次登录已被拒绝": denied,
-                "请在手机上确认登录": scanned,
-            }
-
-            const someTip = Object.keys(tipMap).filter(key => tipMap[key])
-
-            const qrElement = run(() => {
-
-                if (someTip.length > 0) {
-                    return (
-                        <div className={'qr-tip'}>
-                            {someTip[0]}
-                        </div>
-                    )
-                }
-                return (
-                    <img
-                        src={qrcode}
-                        alt={'二维码'}
-                    />
-                )
-            })
-
-            return (
-                <div className={'content'}>
-                    <div className={'tip'}>安全登录，防止被盗</div>
-
-                    <div className={`qrcode shadow ${classes.join(' ')}`} onClick={() => {
-                        if (someTip.length > 0) {
-                            window.location.reload()
-                        }
-                    }}>
-                        {qrElement}
-                    </div>
-
-                    <div className={'state'}>
-                        <Image
-                            src={handler.icon}
-                            width={20}
-                            height={20}
-                            alt={handler.name}
-                        />
-                        {handler.qrTip}
-                    </div>
-                </div>
-            )
+    const content = run(() => {
+        const classMap = {
+            expired,
+            scanned,
+            denied,
+            success,
         }
+
+        const classes = Object.keys(classMap).filter(key => classMap[key])
+
+        const tipMap = {
+            "登录成功": success,
+            "二维码已失效": expired,
+            "本次登录已被拒绝": denied,
+            "请在手机上确认登录": scanned,
+        }
+
+        const someTip = Object.keys(tipMap).filter(key => tipMap[key])
+
+        const qrElement = run(() => {
+
+            if (someTip.length > 0) {
+                return (
+                    <div className={'qr-tip'}>
+                        {someTip[0]}
+                    </div>
+                )
+            }
+            return (
+                <img
+                    src={qrcode}
+                    alt={'二维码'}
+                />
+            )
+        })
+
+        return (
+            <div className={'content'}>
+                <div className={'tip'}>安全登录，防止被盗</div>
+
+                <div className={`qrcode shadow ${classes.join(' ')}`} onClick={() => {
+                    if (someTip.length > 0) {
+                        window.location.reload()
+                    }
+                }}>
+                    {qrElement}
+                </div>
+
+                <div className={'state'}>
+                    <Image
+                        src={handler.icon}
+                        width={20}
+                        height={20}
+                        alt={handler.name}
+                    />
+                    {handler.qrTip}
+                </div>
+            </div>
+        )
     })
 
     return (

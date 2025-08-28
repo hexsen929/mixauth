@@ -1,4 +1,5 @@
 import axios from "axios";
+import "server-only"
 import axiosRetry from "axios-retry";
 
 export const client = axios.create({
