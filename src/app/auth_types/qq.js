@@ -1,4 +1,4 @@
-import {arrayBufferToBase64} from "@/app/utils/ServerUtils";
+import {arrayBufferToBase64, getIp} from "@/app/utils/ServerUtils";
 import {client} from "@/config";
 import "server-only"
 import {QrFetcher} from "@/app/auth_types/utils";
@@ -23,7 +23,7 @@ export default {
 
 
 export async function getQqQrInfo() {
-    logInfo('获取QQ二维码')
+    logInfo(`获取QQ二维码 ${await getIp()}`)
     const response = await client.get('https://xui.ptlogin2.qq.com/ssl/ptqrshow', {
         params: {
             'appid': '716027609',

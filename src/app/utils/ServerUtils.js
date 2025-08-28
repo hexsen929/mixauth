@@ -1,6 +1,7 @@
 // hmac.js
 import crypto from 'crypto';
 import 'server-only'
+import {headers} from "next/headers";
 
 export function arrayBufferToBase64(input) {
     let buffer;
@@ -15,6 +16,29 @@ export function arrayBufferToBase64(input) {
 
     return buffer.toString('base64');
 }
+
+
+export async function getIp() {
+    try {
+        // 获取请求头
+        const h = await headers();
+
+        // 取 x-forwarded-for（代理环境）或 fallback
+        let ip = h.get('x-forwarded-for');
+
+        if (ip) {
+            ip = ip.split(',')[0].trim(); // 取第一个 IP
+        } else {
+            // headers() 里没有 remoteAddress，服务端获取不到就返回 null
+            ip = null;
+        }
+
+        return ip;
+    } catch (err) {
+        return null
+    }
+}
+
 
 // lib/withErrorHandler.js
 export function withErrorHandler(handler) {
