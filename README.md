@@ -24,8 +24,9 @@
 - 需要 Node.js 运行环境  
 - 安装依赖：`npm i`  
 - 构建项目：`npm run build`  
-- 启动服务：`npm run start`  
-- 可通过命令参数 `-port` 或环境变量 `PORT` 指定端口  
+- 启动服务：`npm run start`
+- 也可使用：`next start` 或 `yarn start` 
+- 可通过命令参数 `next start -p 端口` 或环境变量 `PORT` 指定端口  
 - 一键部署到 Vercel：[点击部署](https://vercel.com/new/clone?repository-url=https://github.com/InvertGeek/mixauth)  
 
 ## API 接入
