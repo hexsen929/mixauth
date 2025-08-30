@@ -2,6 +2,11 @@
 无需任何手续，让你的应用快速支持 **QQ / 微信** 登录。 \
 基于nextjs开发
 
+## 在线体验
+- 地址：[https://thorough-celisse-mixauth-f441c344.koyeb.app/](https://thorough-celisse-mixauth-f441c344.koyeb.app/)  
+- 备用地址：[https://mixauth.onrender.com/](https://mixauth.onrender.com/)
+
+
 ## 功能
 - 支持扫码登录  
 - 实时显示二维码状态，包括是否已扫码、是否过期、是否被手机拒绝登录等  
