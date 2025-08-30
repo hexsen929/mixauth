@@ -83,4 +83,12 @@ window.addEventListener('message', function(event) {
 - **必须校验，否则可能被伪造登录信息**
 
 
+## 已知问题
+- 只有通过摄像头扫描二维码才可登陆,qq微信禁止保存二维码到相册识别登陆
+
+## Github Star
+[![Stargazers over time](https://starchart.cc/InvertGeek/mixauth.svg?variant=adaptive)](https://starchart.cc/InvertGeek/mixauth)
+
+
+
 
