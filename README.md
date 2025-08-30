@@ -79,7 +79,7 @@ window.addEventListener('message', function(event) {
 ```
 
 - 结果格式为：**时间戳 | Base64 编码的登录结果 | HMAC 哈希值**  
-- 校验结果时，请先确认结果中的 **QQ 或微信 unionid 不为空**，然后向 `/api/verify` 接口发送请求校验  
+- 校验结果时，请先确认结果中的 **QQ 或微信 unionid 不为空**，然后向 `/api/verify` 接口发送请求校验(后端进行)
 - **必须校验，否则可能被伪造登录信息**
 
 
