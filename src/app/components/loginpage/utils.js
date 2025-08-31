@@ -50,7 +50,7 @@ export function showLoginResult(avatar, id) {
                 <div className="avatar shadow">
                     <img src={avatar} alt="头像"/>
                 </div>
-                <div className="account">帐号: {decodeURIComponent(id)}</div>
+                <div className="account">帐号: {id}</div>
             </div>
             <p>此窗口不会在iframe内显示</p>
             <Button
