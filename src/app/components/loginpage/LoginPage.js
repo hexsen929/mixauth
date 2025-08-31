@@ -5,7 +5,7 @@ import useApi from "@/app/utils/hooks/useApi";
 import Image from "next/image";
 import useProxyState from "@/app/utils/hooks/useProxyState";
 import {run} from "@/app/utils/CommonUtils";
-import {handlers} from "@/app/components/loginpage/handlers";
+import {AuthHandlers} from "@/app/components/loginpage/AuthHandlers";
 import {sendLoginResult} from "@/app/components/loginpage/utils";
 
 const Container = styled.div`
@@ -75,7 +75,7 @@ function Page({type, qr}) {
 
     const {qrcode, id} = qr
 
-    const handler = handlers[type];
+    const handler = AuthHandlers[type];
 
     const state = useProxyState({
         scanned: false,
@@ -102,7 +102,7 @@ function Page({type, qr}) {
     useApi({
         path: `/api/status`,
         method: 'POST',
-        request: !!id && !success && !denied && !expired,
+        request: !success && !denied && !expired,
         refreshInterval: 1000,
         body: {
             type: type,

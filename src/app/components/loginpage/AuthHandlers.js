@@ -60,7 +60,7 @@ const weChatHandler = {
     }
 }
 
-export const handlers = {
+export const AuthHandlers = {
     qq: qqHandler,
     wechat: weChatHandler,
 }

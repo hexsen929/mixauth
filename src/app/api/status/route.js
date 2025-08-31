@@ -1,5 +1,5 @@
 import {createSign, withErrorHandler} from "@/app/utils/ServerUtils";
-import types from "@/app/auth_types/types";
+import {AuthTypes} from "@/app/auth_types/AuthTypes";
 import config from "@/config";
 import 'server-only'
 
@@ -7,7 +7,7 @@ export const POST = withErrorHandler(async (req) => {
 
     const {id, type} = await req.json()
 
-    const auth = types[type]
+    const auth = AuthTypes[type]
 
     const data = await auth.checkStatus(id)
 
