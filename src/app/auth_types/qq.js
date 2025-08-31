@@ -1,5 +1,5 @@
-import {arrayBufferToBase64, getIp} from "@/app/utils/ServerUtils";
-import {client} from "@/config";
+import {arrayBufferToBase64, getIp} from "@/app/utils/server/ServerUtils";
+import config, {client} from "@/config";
 import "server-only"
 import {QrFetcher} from "@/app/auth_types/utils";
 import {logInfo} from "@/app/utils/LogUtil";
@@ -21,6 +21,9 @@ export default {
     checkStatus: checkQqStatus
 }
 
+const qqConfig = config.qq
+const {clientId} = qqConfig
+
 
 export async function getQqQrInfo() {
     logInfo(`获取QQ二维码 ${await getIp()}`)
@@ -29,7 +32,7 @@ export async function getQqQrInfo() {
             'appid': '716027609',
             'e': '2',
             'daid': '383',
-            'pt_3rd_aid': '101487640',
+            'pt_3rd_aid': clientId,
         },
         responseType: "arraybuffer",
     });
@@ -48,7 +51,7 @@ export async function checkQqStatus(sig) {
             'from_ui': '1',
             'aid': '716027609',
             'daid': '383',
-            'pt_3rd_aid': '101487640'
+            'pt_3rd_aid': clientId
         },
         headers: {
             'Cookie': `qrsig=${sig}`

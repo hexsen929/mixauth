@@ -1,10 +1,10 @@
 import {parse} from "node-html-parser";
-import {XMLParser} from "fast-xml-parser";
-import {client} from "@/config";
 import "server-only"
 import {QrFetcher} from "@/app/auth_types/utils";
 import {logInfo} from "@/app/utils/LogUtil";
-import {getIp} from "@/app/utils/ServerUtils";
+import {createCookieClient, getIp} from "@/app/utils/server/ServerUtils";
+import {getUrlParam} from "@/app/utils/CommonUtils";
+import {decodeStrData, encodeStrData} from "@/app/utils/server/aes";
 
 
 const qrFetcher = new QrFetcher(getWechatQrInfo)
@@ -18,13 +18,31 @@ export default {
 
 export async function getWechatQrInfo() {
     logInfo(`获取WeChat二维码 ${await getIp()}`)
-    const response = await client.get('https://open.weixin.qq.com/connect/qrconnect?appid=wx31c7ba982b2ca865&redirect_uri=https%3A%2F%2Fkf.qq.com%2Fcgi-bin%2FwxloginKFWeb%3Fjumpurl%3Dhttps%253A%252F%252Fkf.qq.com%252F&scope=snsapi_login')
+    const {cookieClient, jar} = createCookieClient();
+    const response = await cookieClient.get(`https://smartproxy.tencent.com/connect/login?appid=careers&state=https%3A%2F%2Fcareers.tencent.com%2Fhome.html&sourceid=2&t=${Date.now()}`)
     const root = parse(response.data)
     const src = root.querySelector('img.js_qrcode_img').getAttribute('src')
+    const lastUrl = response.request.res.responseUrl
+    const state = getUrlParam(lastUrl, 'state')
+    const callback = getUrlParam(lastUrl, 'redirect_uri')
 
     const uuid = src.split('/').pop()
+
+    const cookies = await jar.getCookies('https://smartproxy.tencent.com')
+
+    const stateToken = cookies.find((it) => {
+        return it.key === 'state_token'
+    }).value
+
+    const idData = encodeStrData({
+        uuid,
+        callback,
+        state,
+        stateToken,
+    })
+
     return {
-        id: uuid,
+        id: idData,
         qrcode: `https://open.weixin.qq.com/connect/qrcode/${uuid}`
     }
 }
@@ -51,53 +69,35 @@ function parseWindowVars(str) {
     return result;
 }
 
-function parseSetCookieToHeader(setCookieArray) {
-    const cookieMap = new Map();
+export async function checkWechatStatus(idData) {
+    const {uuid, callback, state, stateToken} = decodeStrData(idData)
 
-    setCookieArray.forEach(cookieStr => {
-        // 取分号前的 key=value 部分
-        const [keyValue] = cookieStr.split(';');
-        const [key, value] = keyValue.split('=');
-        // 同名 cookie 保留最后一个
-        cookieMap.set(key.trim(), value.trim());
-    });
+    const {cookieClient, jar} = createCookieClient()
+    await jar.setCookie(`state_token=${stateToken}`, 'https://smartproxy.tencent.com')
 
-    // 拼接成 Cookie 请求头字符串
-    return Array.from(cookieMap.entries())
-        .map(([key, value]) => `${key}=${value}`)
-        .join('; ');
-}
-
-
-export async function checkWechatStatus(uuid) {
-
-    const response = await client.get(`https://lp.open.weixin.qq.com/connect/l/qrconnect?uuid=${uuid}&last=404`)
+    const response = await cookieClient.get(`https://lp.open.weixin.qq.com/connect/l/qrconnect?uuid=${uuid}&last=404`)
 
     const data = parseWindowVars(response.data)
 
     const {wx_code} = data
 
     if (wx_code) {
-
-        const jumpResponse = await client.get(
-            `https://kf.qq.com/cgi-bin/wxloginKFWeb?jumpurl=https%3A%2F%2Fkf.qq.com%2F&code=${wx_code}`
+        //获取cookie
+        await cookieClient.get(
+            `${callback}?code=${wx_code}&state=${state}`
         )
 
-        const cookies = jumpResponse.headers['set-cookie']
 
-        const response = await client.get('https://kf.qq.com/cgi-bin/loginTitle', {
+        const response = await cookieClient.get(`https://careers.tencent.com/tencentcareer/api/user/GetCurrentUser?timestamp=${Date.now()}`, {
             headers: {
-                'referer': 'https://kf.qq.com/',
-                'Cookie': parseSetCookieToHeader(cookies)
+                'referer': 'https://careers.tencent.com/home.html',
             }
         });
 
-        const xmlData = response.data
 
         return {
             success: true,
-            rawData: xmlData,
-            data: new XMLParser().parse(xmlData).root
+            data: response.data
         }
 
     }

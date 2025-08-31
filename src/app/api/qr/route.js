@@ -1,11 +1,22 @@
 import {AuthTypes} from "@/app/auth_types/AuthTypes";
-import {withErrorHandler} from "@/app/utils/ServerUtils";
+import {validate, withErrorHandler} from "@/app/utils/server/ServerUtils";
 import 'server-only'
+import Joi from "joi";
 
 export const POST = withErrorHandler(async (req) => {
 
-// request.json() 解析 JSON 请求体
-    const {type} = await req.json()
+
+    const json = await req.json();
+    // Joi 验证 schema
+    const schema = Joi.object({
+        type: Joi.string()
+            .valid(...Object.keys(AuthTypes))
+            .required()
+    });
+
+    validate(json, schema)
+
+    const {type} = json
 
     const auth = AuthTypes[type]
 

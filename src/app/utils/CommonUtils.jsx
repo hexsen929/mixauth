@@ -144,3 +144,17 @@ export function compareByName(a, b) {
     return a.length - b.length;
 }
 
+/**
+ * 提取 URL 中指定参数的值
+ * @param {string} url - 完整的 URL
+ * @param {string} paramName - 要提取的参数名
+ * @returns {string|null} 参数值，如果不存在返回 null
+ */
+export function getUrlParam(url, paramName) {
+    try {
+        const parsed = new URL(url);
+        return parsed.searchParams.get(paramName);
+    } catch (e) {
+        return null; // URL 格式错误
+    }
+}

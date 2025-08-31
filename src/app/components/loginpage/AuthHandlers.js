@@ -44,14 +44,13 @@ const weChatHandler = {
         const wxData = data?.data
         if (wxData) {
             const {
-                login_type,
-                unionid,
-                wx_nick,
-                wx_headimgurl
+                HeaderImg,
+                NickName,
+                UserIdStr,
             }
-                = wxData
-            if (login_type === "weixin" && unionid) {
-                showLoginResult(wx_headimgurl, wx_nick)
+                = wxData.Data
+            if (UserIdStr) {
+                showLoginResult(HeaderImg, NickName)
                 state.success = true
                 state.signData = body.signData
             }
