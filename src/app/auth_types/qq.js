@@ -3,6 +3,7 @@ import config, {client} from "@/config";
 import "server-only"
 import {QrFetcher} from "@/app/auth_types/utils";
 import {logInfo} from "@/app/utils/LogUtil";
+import {getUrlParam} from "@/app/utils/CommonUtils";
 
 function hash33(t) {
     let e = 0;
@@ -60,15 +61,6 @@ export async function checkQqStatus(sig) {
     return parsePtuiCB(response.data)
 }
 
-function getQueryParam(url, paramName) {
-    try {
-        const urlObj = new URL(url);
-        return urlObj.searchParams.get(paramName);
-    } catch (e) {
-        console.error("Invalid URL:", e.message);
-        return null;
-    }
-}
 
 function parsePtuiCB(str, asObject = true) {
     const match = str.match(/^ptuiCB\((.*)\)$/);
@@ -96,7 +88,7 @@ function parsePtuiCB(str, asObject = true) {
 
     //登录成功返回qq
     if (code === '0' && redirect) {
-        const qq = getQueryParam(redirect, 'uin')
+        const qq = getUrlParam(redirect, 'uin')
         data.qq = qq
         data.avatar = `https://q.qlogo.cn/headimg_dl?dst_uin=${qq}&spec=640&img_type=jpg`
         data.success = true
