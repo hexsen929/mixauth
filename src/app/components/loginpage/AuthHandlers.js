@@ -43,7 +43,6 @@ const weChatHandler = {
         }
         const wxData = data?.data
         if (wxData) {
-
             const {
                 login_type,
                 unionid,
