@@ -10,8 +10,14 @@ html {
     background-color: rgba(160, 84, 245, 0.14) !important;
   }
 
+  .MuiInputBase-root {
+    height: fit-content;
+    line-height: 20px;
+  }
+
   .MuiNativeSelect-select {
     padding: 10px;
+    height: fit-content;
   }
 
 
