@@ -3,8 +3,7 @@
 基于nextjs开发
 
 ## 在线体验
-- 地址：[https://thorough-celisse-mixauth-f441c344.koyeb.app/](https://thorough-celisse-mixauth-f441c344.koyeb.app/)  
-- 备用地址：[https://mixauth.onrender.com/](https://mixauth.onrender.com/)
+- 地址：[https://mixauth.onrender.com/](https://mixauth.onrender.com/)
 
 
 ## 功能
