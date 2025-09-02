@@ -46,6 +46,25 @@
 - 可通过命令参数 `next start -p 端口` 或环境变量 `PORT` 指定端口  
 - 可一键部署到 Vercel：[点击部署](https://vercel.com/new/clone?repository-url=https://github.com/InvertGeek/mixauth)  
 
+## 快速接入
+- 可直接使用 iframe 接入  
+- 父页面接收登录回调示例：
+```html
+<script>
+window.addEventListener('message', function(event) {
+  const message = event.data;
+  if (message && message.type === 'mixauth_login_result') {
+    const loginResult = message.data;
+    console.log('收到登录结果:', loginResult);
+  }
+});
+</script>
+```
+
+- 结果格式为：**时间戳 | Base64 编码的登录结果 | HMAC 哈希值**  
+- 校验结果时，请先确认结果中的 **QQ 或微信 UserIdStr 不为空**，然后向 `/api/verify` 接口发送请求校验(后端进行)
+- **必须校验，否则可能被伪造登录信息**
+
 ## API 接入
 - 使用接口可进行 API 接入  
 - API 接入无需 verify 校验，自行根据 status 返回结果处理即可  
@@ -75,24 +94,6 @@
 {"sign": "签名信息"}
 ```
 
-## 快速接入
-- 可直接使用 iframe 接入  
-- 父页面接收登录回调示例：
-```html
-<script>
-window.addEventListener('message', function(event) {
-  const message = event.data;
-  if (message && message.type === 'mixauth_login_result') {
-    const loginResult = message.data;
-    console.log('收到登录结果:', loginResult);
-  }
-});
-</script>
-```
-
-- 结果格式为：**时间戳 | Base64 编码的登录结果 | HMAC 哈希值**  
-- 校验结果时，请先确认结果中的 **QQ 或微信 UserIdStr 不为空**，然后向 `/api/verify` 接口发送请求校验(后端进行)
-- **必须校验，否则可能被伪造登录信息**
 
 
 ## 已知问题
