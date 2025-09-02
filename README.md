@@ -40,7 +40,6 @@
 - 编辑 `src/config.js`，将秘钥改为更复杂的秘钥 
 - 需要 Node.js 运行环境  
 - 安装依赖：`npm i`  
-- 到src/config.js下编辑配置
 - 构建项目：`npm run build`  
 - 启动服务：`npm run start`
 - 也可使用：`next start` 或 `yarn start` 
