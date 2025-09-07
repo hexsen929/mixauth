@@ -15,11 +15,6 @@ html {
     line-height: 20px;
   }
 
-  .MuiNativeSelect-select {
-    padding: 10px;
-    height: fit-content;
-  }
-
 
   .MuiSvgIcon-root {
     font-size: 24px;
@@ -35,13 +30,6 @@ html {
   }
 
 
-  .MuiInputBase-input,
-  .MuiFormLabel-root,
-  .MuiTypography-root,
-  .MuiMenuItem-root, {
-    font-size: 16px
-  }
-
   .MuiMenuItem-root {
     overflow: hidden;
     width: fit-content;
@@ -55,7 +43,6 @@ html {
   }
 
   .MuiTreeItem-label, {
-    font-size: 16px;
     user-select: none;
   }
 

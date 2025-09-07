@@ -8,16 +8,6 @@ function GlobalSideEffect(props) {
 
         console.info('由MixAuth提供认证支持')
 
-        function updateSize() {
-            const width = Math.max(window.innerWidth, window.innerHeight)
-            document.documentElement.style.fontSize = width / 100 + 'px'
-        }
-
-        updateSize()
-
-        window.addEventListener('resize', () => {
-            debounce('resize', updateSize, 500)
-        })
     }, [])
 
     return (
