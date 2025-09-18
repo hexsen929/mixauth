@@ -8,7 +8,7 @@ export const client = axios.create({
     }
 })
 
-axiosRetry(client, {
+axiosRetry(client， {
     retries: 3,
     retryDelay: (retryCount) => {
         return retryCount * 100;
@@ -19,7 +19,7 @@ export default {
     title: 'MixAuth',
     description: 'mixauth登录',
     //请自行更换为更复杂的key(22位以上)
-    signKey: "123",
+    signKey: "hexsenlogin123456789981",
     //登录信息校验过期时间，默认10分钟
     timeout: 1000 * 60 * 10,
     //控制台输出的ip地址信息请求头
