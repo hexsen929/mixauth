@@ -8,7 +8,7 @@ export const client = axios.create({
     }
 })
 
-axiosRetry(client， {
+axiosRetry(client, {
     retries: 3,
     retryDelay: (retryCount) => {
         return retryCount * 100;
